@@ -14,7 +14,7 @@ env:
   # GPG_OWNERTRUST
   - secure: "GPG_OWNERTRUST"
 before_install:
-  - openssl aes-256-cbc -K $encrypted_d468480049d7_key -iv $encrypted_d468480049d7_iv -in gpg_secret_keys.txt.enc -out gpg_secret_keys.txt -d 
+  - openssl aes-256-cbc -K $encrypted_6bc41dcd17b4_key -iv $encrypted_6bc41dcd17b4_iv -in gpg_secret_keys.txt.enc -out gpg_secret_keys.txt -d 
   - cat ./gpg_secret_keys.txt | base64 --decode | gpg --import
   - echo $GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
   - mkdir -p $HOME/.gradle/
