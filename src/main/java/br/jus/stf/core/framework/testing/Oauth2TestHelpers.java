@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
  * <p>Classe com métodos utilitários relacionados com a autenticação
  * via Oauth2 durante os testes de integração.</p>
  * 
- * <p>Essa estratégia de mock da autenticação foi baseada nos seguintes links:
+ * <p>Essa estratégia de mock da autenticação foi baseada nos seguintes links:</p>
  * 
  * <ul>
  *     <li><a href="http://engineering.pivotal.io/post/faking_oauth_sso/">
@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
  * 	   <li><a href="https://github.com/spring-projects/spring-security-oauth/issues/385">
  *                  https://github.com/spring-projects/spring-security-oauth/issues/385</a></li>
  * </ul>
- * </p>
  * 
  * @author Tomas.Godoi
  *
@@ -38,16 +37,15 @@ public class Oauth2TestHelpers {
 	/**
 	 * <p>Constrói um RequestPostProcessor para realizar a autenticação mock nos testes.</p>
 	 * 
-	 * <p>Deve ser usado da seguinte forma:
-	 *     <pre>
-	 *         mockMvc.perform(post("/api/url")
-	 *                 .with(oauthAuthentication(login))
-	 *                 .contentType(APPLICATION_JSON).content(json))
-	 *     </pre>
-	 * </p>
+	 * <p>Deve ser usado da seguinte forma:</p>
+	 * <pre>
+	 *     mockMvc.perform(post("/api/url")
+	 *             .with(oauthAuthentication(login))
+	 *             .contentType(APPLICATION_JSON).content(json))
+	 * </pre>
 	 * 
-	 * @param login
-	 * @return
+	 * @param login O login do usuário
+	 * @return o RequestPostProcessor que injetará a autenticação
 	 */
 	public static RequestPostProcessor oauthAuthentication(String login) {
 		return authentication(getOauthTestAuthentication(login));
