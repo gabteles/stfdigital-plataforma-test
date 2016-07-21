@@ -4,7 +4,7 @@ buildscript {
 		sonarqubeGradlePluginVersion = '2.0.1';
 	
         springBootVersion = '1.4.0.RC1'
-        springCloudReleaseTrainVersion = 'Brixton.SR3'
+        springCloudVersion = '1.1.1.RELEASE'
         
         jacocoToolVersion = '0.7.7.201606060606'
 	}
@@ -12,20 +12,21 @@ buildscript {
     	mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.spring.io/libs-milestone" }
     }
     dependencies {
-        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}")
     }
 }
-
-apply plugin: "io.spring.dependency-management"
 
 apply plugin: 'java'
 
 apply plugin: 'maven'
 
 apply plugin: 'eclipse'
+
+apply plugin: 'spring-boot'
 
 apply plugin: 'signing'
 
@@ -43,13 +44,6 @@ repositories {
     maven { url "https://repo.spring.io/libs-milestone" }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudReleaseTrainVersion}")
-        mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    }
-}
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
     
@@ -59,7 +53,7 @@ dependencies {
     
     compile("org.springframework.boot:spring-boot-starter-amqp")
     
-    compile("org.springframework.cloud:spring-cloud-starter-oauth2")
+    compile("org.springframework.cloud:spring-cloud-starter-oauth2:${springCloudVersion}")
 
     compile("org.springframework.boot:spring-boot-starter-test")
     

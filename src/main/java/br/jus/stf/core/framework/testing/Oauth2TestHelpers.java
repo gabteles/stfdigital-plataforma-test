@@ -34,6 +34,8 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
  */
 public class Oauth2TestHelpers {
 
+	public static final String TEST_ACCESS_TOKEN = "9d31c7ec-d4a1-4017-9e13-dc2832761e4e";
+	
 	/**
 	 * <p>Constrói um RequestPostProcessor para realizar a autenticação mock nos testes.</p>
 	 * 
