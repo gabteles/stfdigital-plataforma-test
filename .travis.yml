@@ -27,4 +27,4 @@ before_install:
   - echo signing.password=$SIGNING_PASSWORD >> $HOME/.gradle/gradle.properties
   - echo signing.secretKeyRingFile=$HOME/.gnupg/secring.gpg >> $HOME/.gradle/gradle.properties
 install: true
-script: ./gradlew.sh uploadArchives
+script: ./gradlew uploadArchives
