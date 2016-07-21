@@ -1,0 +1,136 @@
+buildscript {
+	ext {
+		dependencyManagementPluginVersion = '0.6.0.RELEASE'
+		sonarqubeGradlePluginVersion = '2.0.1';
+	
+        springBootVersion = '1.4.0.RC1'
+        springCloudReleaseTrainVersion = 'Brixton.SR3'
+        
+        jacocoToolVersion = '0.7.7.201606060606'
+	}
+    repositories {
+    	mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}")
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+
+apply plugin: 'java'
+
+apply plugin: 'maven'
+
+apply plugin: 'eclipse'
+
+apply plugin: 'signing'
+
+apply plugin: 'jacoco'
+
+apply plugin: 'org.sonarqube'
+
+version = '0.0.1-SNAPSHOT'
+
+group   = 'br.jus.stf.digital'
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.spring.io/libs-milestone" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudReleaseTrainVersion}")
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    
+    compile("org.springframework.boot:spring-boot-starter-web")
+    
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-oauth2")
+
+    compile("org.springframework.boot:spring-boot-starter-test")
+    
+    compile("org.springframework.security:spring-security-test")
+}
+
+// Cobertura de testes
+jacoco {
+    toolVersion = jacocoToolVersion
+}
+
+task javadocJar(type: Jar, dependsOn: classes) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
+
+        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
+
+        pom.project {
+            name 'STF Digital - Plataforma - Test'
+            packaging 'jar'
+
+            description 'Biblioteca com classes compartilhadas para testes do STF Digital'
+            url 'http://supremotribunalfederal.github.io/stfdigital/'
+
+            scm {
+                connection 'scm:git:git@github.com:supremotribunalfederal/stfdigital-plataforma-test.git'
+                developerConnection 'scm:git:git@github.com:supremotribunalfederal/stfdigital-plataforma-test.git'
+                url 'git@github.com:supremotribunalfederal/stfdigital-plataforma-test.git'
+            }
+
+            licenses {
+                license {
+                    name 'GNU Lesser General Public License, Version 3.0'
+                    url 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'tomas.godoi'
+                    name 'Tomás Godoi'
+                    email 'tomas.godoi@stf.jus.br'
+              }
+            }
+        }
+    }
+  }
+}

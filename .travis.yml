@@ -1,0 +1,25 @@
+language: java
+jdk:
+- oraclejdk8
+env:
+  global:
+  # ORG_GRADLE_PROJECT_ossrhUsername
+  - secure: "ORG_GRADLE_PROJECT_ossrhUsername"
+  # ORG_GRADLE_PROJECT_ossrhPassword
+  - secure: "ORG_GRADLE_PROJECT_ossrhPassword"
+  # SIGNING_KEYID
+  - secure: "SIGNING_KEYID"
+  # SIGNING_PASSWORD
+  - secure: "SIGNING_PASSWORD"
+  # GPG_OWNERTRUST
+  - secure: "GPG_OWNERTRUST"
+before_install:
+  - openssl aes-256-cbc -K $encrypted_d468480049d7_key -iv $encrypted_d468480049d7_iv -in gpg_secret_keys.txt.enc -out gpg_secret_keys.txt -d 
+  - cat ./gpg_secret_keys.txt | base64 --decode | gpg --import
+  - echo $GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
+  - mkdir -p $HOME/.gradle/
+  - echo signing.keyId=$SIGNING_KEYID > $HOME/.gradle/gradle.properties
+  - echo signing.password=$SIGNING_PASSWORD >> $HOME/.gradle/gradle.properties
+  - echo signing.secretKeyRingFile=$HOME/.gnupg/secring.gpg >> $HOME/.gradle/gradle.properties
+install: true
+script: gradle uploadArchives

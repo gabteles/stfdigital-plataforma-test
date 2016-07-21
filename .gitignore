@@ -1,0 +1,20 @@
+# --------------------------------
+# Mac OS
+.DS_Store
+.project
+
+# --------------------------------
+
+# Visual Studio Code
+.vscode
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# Gradle
+.gradle
+build
+bin
+data
