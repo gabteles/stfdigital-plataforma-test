@@ -51,12 +51,15 @@ public class Oauth2TestHelpers {
 	 * @return o RequestPostProcessor que injetará a autenticação
 	 */
 	public static RequestPostProcessor oauth2Authentication(String login) {
-		return authentication(buildOauth2TestAuthentication(login));
+		return authentication(buildOauth2TestAuthentication(login, 1));
 	}
 	
+	public static RequestPostProcessor oauth2Authentication(String login, Integer pessoaId) {
+		return authentication(buildOauth2TestAuthentication(login, pessoaId));
+	}
 	
-	public static Authentication buildOauth2TestAuthentication(String principal, GrantedAuthority... authorities) {
-	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, authorities));
+	public static Authentication buildOauth2TestAuthentication(String principal, Integer pessoaId, GrantedAuthority... authorities) {
+	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, pessoaId, authorities));
 	}
 	
 	private static OAuth2Request getOauth2Request () {
@@ -76,7 +79,7 @@ public class Oauth2TestHelpers {
 	    return oAuth2Request;
 	}
 	
-	private static Authentication getAuthentication(String principal, GrantedAuthority... authorities) {
+	private static Authentication getAuthentication(String principal, Integer pessoaId, GrantedAuthority... authorities) {
 		List<GrantedAuthority> authoritiesList;
 		if (authorities.length == 0) {
 			authoritiesList = AuthorityUtils.createAuthorityList("ROLE_USER");
@@ -86,7 +89,7 @@ public class Oauth2TestHelpers {
 
 	    HashMap<String, Object> details = new HashMap<>();
 	    details.put("login", principal);
-	    details.put("pessoaId", new Integer(1));
+	    details.put("pessoaId", pessoaId);
 
 	    TestingAuthenticationToken token = new TestingAuthenticationToken(principal, "N/A", authoritiesList);
 	    token.setAuthenticated(true);

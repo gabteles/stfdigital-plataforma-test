@@ -49,7 +49,7 @@ final class WithMockOauth2UserSecurityContextFactory implements
 			throw new IllegalStateException("You cannot define roles attribute "+ Arrays.asList(withUser.roles())+" with authorities attribute "+ Arrays.asList(withUser.authorities()));
 		}
 
-		Authentication authentication = Oauth2TestHelpers.buildOauth2TestAuthentication(username, grantedAuthorities.toArray(new GrantedAuthority[0]));
+		Authentication authentication = Oauth2TestHelpers.buildOauth2TestAuthentication(username, withUser.pessoaId(), grantedAuthorities.toArray(new GrantedAuthority[0]));
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
 		context.setAuthentication(authentication);
 		return context;
