@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,8 +14,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Centraliza o setup básico para os testes de integração.
@@ -30,19 +27,12 @@ import org.springframework.web.context.WebApplicationContext;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public abstract class IntegrationTestsSupport {
- 
-    @Autowired
-    private WebApplicationContext wac;
 
+    @Autowired
     protected MockMvc mockMvc;
     
     @Autowired
 	private DataSource dataSource;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
     
     /**
      * Realiza a carga de scripts SQL.

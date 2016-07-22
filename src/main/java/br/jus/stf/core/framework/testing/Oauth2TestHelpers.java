@@ -2,6 +2,7 @@ package br.jus.stf.core.framework.testing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,13 +50,13 @@ public class Oauth2TestHelpers {
 	 * @param login O login do usuário
 	 * @return o RequestPostProcessor que injetará a autenticação
 	 */
-	public static RequestPostProcessor oauthAuthentication(String login) {
-		return authentication(getOauthTestAuthentication(login));
+	public static RequestPostProcessor oauth2Authentication(String login) {
+		return authentication(buildOauth2TestAuthentication(login));
 	}
 	
 	
-	private static Authentication getOauthTestAuthentication(String principal) {
-	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal));
+	public static Authentication buildOauth2TestAuthentication(String principal, GrantedAuthority... authorities) {
+	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, authorities));
 	}
 	
 	private static OAuth2Request getOauth2Request () {
@@ -75,14 +76,19 @@ public class Oauth2TestHelpers {
 	    return oAuth2Request;
 	}
 	
-	private static Authentication getAuthentication(String principal) {
-	    List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+	private static Authentication getAuthentication(String principal, GrantedAuthority... authorities) {
+		List<GrantedAuthority> authoritiesList;
+		if (authorities.length == 0) {
+			authoritiesList = AuthorityUtils.createAuthorityList("ROLE_USER");
+		} else {
+			authoritiesList = Arrays.asList(authorities);
+		}
 
 	    HashMap<String, Object> details = new HashMap<>();
 	    details.put("login", principal);
 	    details.put("pessoaId", new Integer(1));
 
-	    TestingAuthenticationToken token = new TestingAuthenticationToken(principal, "N/A", authorities);
+	    TestingAuthenticationToken token = new TestingAuthenticationToken(principal, "N/A", authoritiesList);
 	    token.setAuthenticated(true);
 	    token.setDetails(details);
 
