@@ -26,7 +26,7 @@ public @interface WithMockOauth2User {
 	/**
 	 * Convenience mechanism for specifying the username. The default is "user". If
 	 * {@link #username()} is specified it will be used instead of {@link #value()}
-	 * @return
+	 * @return o valor do username
 	 */
 	String value() default "user";
 
@@ -34,7 +34,7 @@ public @interface WithMockOauth2User {
 	 * The username to be used. Note that {@link #value()} is a synonym for
 	 * {@link #username()}, but if {@link #username()} is specified it will take
 	 * precedence.
-	 * @return
+	 * @return o valor do username
 	 */
 	String username() default "";
 
@@ -48,7 +48,7 @@ public @interface WithMockOauth2User {
 	 * If {@link #authorities()} is specified this property cannot be changed from the default.
 	 * </p>
 	 *
-	 * @return
+	 * @return as roles
 	 */
 	String[] roles() default { "USER" };
 
@@ -62,7 +62,7 @@ public @interface WithMockOauth2User {
 	 * {@link #roles()} in that it does not prefix the values passed in automatically.
 	 * </p>
 	 *
-	 * @return
+	 * @return as authorities
 	 */
 	String[] authorities() default {};
 
