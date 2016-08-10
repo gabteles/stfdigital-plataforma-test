@@ -66,6 +66,8 @@ public @interface WithMockOauth2User {
 	 */
 	String[] authorities() default {};
 	
+	String[] components() default {};
+	
 	int pessoaId() default 1;
 
 }

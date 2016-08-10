@@ -59,7 +59,11 @@ public class Oauth2TestHelpers {
 	}
 	
 	public static Authentication buildOauth2TestAuthentication(String principal, Integer pessoaId, GrantedAuthority... authorities) {
-	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, pessoaId, authorities));
+	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, pessoaId, new String[] {}, authorities));
+	}
+	
+	public static Authentication buildOauth2TestAuthentication(String principal, int pessoaId, String[] components, GrantedAuthority... authorities) {
+	    return new OAuth2Authentication(getOauth2Request(), getAuthentication(principal, pessoaId, components, authorities));
 	}
 	
 	private static OAuth2Request getOauth2Request () {
@@ -79,7 +83,7 @@ public class Oauth2TestHelpers {
 	    return oAuth2Request;
 	}
 	
-	private static Authentication getAuthentication(String principal, Integer pessoaId, GrantedAuthority... authorities) {
+	private static Authentication getAuthentication(String principal, Integer pessoaId, String[] components, GrantedAuthority... authorities) {
 		List<GrantedAuthority> authoritiesList;
 		if (authorities.length == 0) {
 			authoritiesList = AuthorityUtils.createAuthorityList("ROLE_USER");
@@ -90,6 +94,7 @@ public class Oauth2TestHelpers {
 	    HashMap<String, Object> details = new HashMap<>();
 	    details.put("login", principal);
 	    details.put("pessoaId", pessoaId);
+	    details.put("componentes", Arrays.asList(components));
 
 	    TestingAuthenticationToken token = new TestingAuthenticationToken(principal, "N/A", authoritiesList);
 	    token.setAuthenticated(true);
@@ -97,5 +102,5 @@ public class Oauth2TestHelpers {
 
 	    return token;
 	}
-	
+
 }
